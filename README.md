@@ -1,1 +1,2 @@
 # AIFORSCIENCE
+运行时请把AFFNet,AFFTrans,BasicModel放在module文件夹下，把train和test数据集放在dataset文件夹下，把dataprocess的有关代码放在data_preprocessing文件夹下，并且注意在主文件夹下创一个Task1Model，Task2Model，results的文件夹
