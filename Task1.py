@@ -479,6 +479,14 @@ def calculate_metric(pred_prob, label_pred, label_real):
     prc_data = [recall, precision, AP]
     return performance, roc_data, prc_data
 
+def save_epoch_model(epoch, model, performance, model_dir,t0):
+    filename = f'epoch_{epoch + 1}_model_acc_{performance[0]:.4f}_{t0}.pt'
+    save_path_pt = os.path.join(model_dir, filename)
+    torch.save({
+        'model_state_dict': model.state_dict(),
+        'performance': performance,
+    }, save_path_pt)
+    print(f"保存第 {epoch + 1} 轮的模型和性能指标到 {save_path_pt}")
 
 def to_log(log):
     with open("./results/ExamPle_Log.log", "a+") as f:
@@ -550,6 +558,8 @@ for fold, (train_idx, val_idx) in enumerate(kf.split(train_dataset)):
         print(results)
         to_log(results)
 
+        save_epoch_model(epoch, net, val_performance, model_dir,t0)
+        
         # 使用验证损失进行判断
         current_val_loss = val_performance[0]  # 假设 val_performance[0] 是验证损失
         if current_val_loss < best_val_loss:
